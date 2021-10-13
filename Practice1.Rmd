@@ -1,0 +1,69 @@
+---
+title: "Practice 1"
+author: "Eric Liu"
+date: "2021/10/13"
+output: html_document
+---
+# Import data
+
+The data set `rairuoho` is available at the following link. It provides 8 days length data of Easter grass exposed to different treatments.
+Import the data by the function `read.delim`
+
+```{r}
+
+rairuoho <- read.delim('https://www.dipintothereef.com/uploads/3/7/3/5/37359245/rairuoho.txt')
+head(rairuoho, 4)
+
+```
+
+# Replace **nutrient** with **enriched**
+
+Within the variable treatement, `nutrient` is misleading because it is water enriched with nutrient. Replace `nutrient` with `enriched` in the data set by function `ifelse`.
+
+```{r}
+#If the element is 'nutrient', replace with 'enriched'. If it is not, remain as 'water'
+rairuoho$treatment <- ifelse(rairuoho$treatment == 'nutrient', 'enriched', 'water')
+head(rairuoho, 3)
+
+```
+
+# Reformat the table
+
+- Create new variables: `day` and `length` \n
+
+Have the day as a single variable (factor) containing 6 levels (day3, day4, day5, day6, day7, day8). Another variable `length` will be created to receive the length of the grass at the given day.
+Use the function `pivot_longer` in the package `tidyr`
+
+```{r}
+
+library(tidyr)
+#Select columns from day3 to day8
+rairuoho.long <- rairuoho %>% pivot_longer(day3:day8, names_to = 'day', values_to = 'length')
+head(rairuoho.long, 3)
+
+```
+
+- Merge variables `Spatial1` and `Spatial2` into `spatial`\n
+
+In order to obtain the following format for the spatial coordinates of an observation `upper_left`. Use the function `unite` in the package `tidyr`
+
+```{r}
+#Connect the strings with '_'
+rairuoho.long.spatial <- rairuoho.long %>% unite(col = 'spatial', spatial1, spatial2, sep = '_')
+head(rairuoho.long.spatial, 3)
+
+
+```
+
+# Remove variables
+
+The variable row and column are meaningless. They should be removed. Use the function `select` in the package `tidyverse`
+
+```{r}
+
+library(tidyverse)
+#Select variables that should be removed
+rairuoho.final <- select(rairuoho.long.spatial, -row, -column)
+head(rairuoho.final, 3)
+
+```
