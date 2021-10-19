@@ -1,0 +1,72 @@
+---
+title: "Prctice 2"
+author: "Eric Liu"
+date: "2021/10/19"
+output: html_document
+---
+# Type the data
+## Build a data frame with the weight of each subject
+
+```{r}
+
+before_diet <- c(104, 95, 87, 77, 112)
+after_diet <- c(96, 91, 81, 75, 118)
+bubble_exp <- data.frame(before_diet, after_diet)
+rownames(bubble_exp) <- c('subject_1', 'subject_2', 'subject_3', 'subject_4', 'subject_5')
+head(bubble_exp)
+str(bubble_exp)
+
+```
+
+# Creat a list `BUBBLE_DIET`
+## First element of the list is a data frame defined as `DIET_RESULT`
+
+```{r}
+
+library(tidyr)
+DIET_RESULT <- bubble_exp %>%
+  pivot_longer(before_diet:after_diet, values_to = 'weight', names_to = 'time')
+head(DIET_RESULT, 4)
+```
+
+## Second element of the list is a list contained three elements
+- First element is a vector of character of the row names of `bubble_exp`
+
+```{r}
+
+subject <- rownames(bubble_exp)
+
+```
+
+- Second element is a numeric vector of the weight loss of each subject (in %)
+
+```{r}
+weight_loss <- (bubble_exp$after_diet - bubble_exp$before_diet) / bubble_exp$before_diet * 100
+
+```
+
+- Third element is a data.frame combined the vector `subject` and `weight_loss`
+
+```{r}
+
+subject_weight <- data.frame(subject, weight_loss)
+head(subject_weight)
+```
+
+- Combined these three elements as a list called `WEIGHT_LOSS`
+
+```{r}
+
+WEIGHT_LOSS <- list(subject = subject, weight_loss = weight_loss, subject_weight = subject_weight )
+str(WEIGHT_LOSS)
+
+```
+
+## Finally, combine `DIET_RESULT` and `WEIGHT_LOSS` as a list defined as `BUBBLE_DIET`
+
+```{r}
+
+BUBBLE_DIET <- list(DIET_RESULT = DIET_RESULT, WEIGHT_LOSS = WEIGHT_LOSS)
+str(BUBBLE_DIET)
+
+```
