@@ -1,0 +1,48 @@
+---
+title: "Practice 3"
+author: "Eric Liu"
+date: "2021/10/27"
+output: html_document
+---
+### Using rairuoho dataset, examine the relationship between the length of the plant at day3 and the length at day7: create a scatterplot.
+
+# Import data
+
+```{r}
+
+rairuoho <- read.table('https://www.dipintothereef.com/uploads/3/7/3/5/37359245/rairuoho.txt', header = T, sep = '')
+head(rairuoho, 4)
+str(rairuoho)
+
+```
+
+# Create a scatterplot
+
+### I also included the treatment and the germinate number in my scatter plot by different color and size as well.
+
+```{r}
+
+#pdf(file = 'The length of plant.pdf', width = 6, height = 4)
+
+rai.col <- ifelse(rairuoho$treatment == 'nutrient', 'red', 'navy') #Different color for different treatment, red for with enriched ones and blue for control group.
+par(mar = c(5, 4, 4, 6)) #Set up the margins of the plot
+
+#Build a blank plot
+plot(day3 ~ day7, data = rairuoho, type = 'n', las = 1,
+     main = 'The relationship between the length of plant\n at day3 and the length at day7',
+     xlab = 'Day7 length (cm)', ylab = 'Day3 length (cm)',
+     xlim = range(rairuoho$day7, na.rm = T), ylim = c(0, 13), yaxs = 'i', xaxs = 'i')
+
+#Add scatters on the plot
+points(day3 ~ day7, data = rairuoho, cex = rairuoho$germinate/10, pch = 19,
+       col = scales::alpha(rai.col, 0.7))
+
+legend(x = 127, y = 12, legend = c('Enriched', 'Water'), title = 'Treatment', pch = 19,
+       col =  scales::alpha(levels(as.factor(rai.col)), 0.7), bty = 'n', xpd = T, title.adj = 0) #Legend for different treatment
+
+legend(x = 127, y = 6, legend = c('20', '6'), title = 'Number', pch = 19, bty = 'n', xpd = T,
+       pt.cex = c(2, 0.6)) #Legend for different germinate number
+
+#dev.off()
+
+```
