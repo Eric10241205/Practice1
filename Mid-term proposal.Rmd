@@ -1,0 +1,38 @@
+---
+title: "Mid-term proposal"
+author: "Liu, CHIA-HUNG (Eric)"
+date: "2021/11/15"
+output: html_document
+---
+
+## Amphioxus populations in Xiaoliuqiu
+
+#### 1、	Introduction  
+Amphioxus belongs to Cephalochordate, which is thought to be an important transition index of invertebrates evolving to vertebrates. They are model species in evolutionary biology that can help us understand more about neurodevelopment. There are three genera of amphioxus, which is _Asymmetron_, _Epigonichthys_, and _Branchiostoma_. (Poss S. G, et al., 1996; Nishikawa T., 2004) Taiwan is recorded with five species, which is _A. lucayanum_, _E. maldivensis_, _E. cultellus_, _B. belcheri_, _B. japonicum_ (Lin et al., 2015). The dominant species in Taiwan is _A. lucayanum_, excluding ampioxi in Kinmen.  
+However, due to pollution and human activity, the number of amphioxi decreases sharply. Many research resources are being put into knowing their reproduction patterns. Most _Branchiostoma_ species can reproduce their offspring steadily in artificial environment. In contrast, we still know little about _Asymmetron_. The reproduction patterns of _A. lucayanum_ in Taiwan can be divided into north group and south group by seasonal variations. South group has higher densities, and their amount reaches peak in June. Mature individuals can be found all over the year, showing no apparent breeding season. On the contrary, north group has less densities, and their amount reaches peak in June as well. Mature individuals appear only from August to September. Therefore, temperature is supposed to be a key factor influencing the maturation of _A. lucayanum_ in Taiwan (Lin et al., 2015).
+
+***
+
+#### 2、	Purpose  
+By analyzing the `species`, `body length`, and `gonad index` of amphioxus collected in Xiaoliuqiu in different seasons and sites, the distribution and reproduction patterns would be clearer, which can help draw up policy for recovery of amphioxus.
+
+***
+
+#### 3、	Method
+##### A. Sample collection  
+Amphioxi were collected by scuba diving in August 2020 and March 2021. We chose three site, Lobster cave, Dafu, and Sanfu. Select suitable sands in the depth from 5 to 17 meters and dug the sands with sampling bags. The sands were brought back to the shore and put into a bucket. By stirring the sands, we could find out amphioxi hiding in the sands. The amphioxi were then scooped up by a spoon and poured into tubes. 
+
+##### B. Data analysis  
+The species identification and physical index measurement (`body length`, `body height`, and `gonad index`) were done under microscope. `Mapping`, `species distribution in different sites`, `body length distribution`, `the relationship between body length and gonad index` would be done by  R.
+
+***
+
+#### 4、	Expectations  
+There might be seasonal or site-dependent variations of the amphioxus populations in Xiaoliuqiu. Through analyzing the body length distribution, it could present the growth of amphioxi in different seasons. By knowing the proportion of mature individuals, we could speculate the potential breeding seasons of amphioxus. Therefore, we could understand more about the ecology of amphioxi in Xiaoliuqiu.
+
+***
+
+#### 5、	Reference
+[1] Lin H. C., Chen J. P, Chan B. K. K., Shao K. T. (2015) The interplay of sediment characteristics, depth, water temperature, and ocean currents shaping the biogeo-graphy of lancelets (Subphylum Cephalochordata) in the NW Pacific waters. Marine Ecology 36: 780-793.  
+[2] Nishikawa T. (2004) A New Deep-water Lancelet (Cephalochordata) from off Cape Nomamisaki, SW Japan, with a Proposal of the Revised System Recovering the Genus Asymmetron. Zoological Science 21: 1131-1136.  
+[3] Poss S. G., Boschung H. T. (1996) Lancelets (Cephalochordata: Branchiostomatidae): How many species are valid? Israel Journal of Zoology, 42, S-13-S-66.  
