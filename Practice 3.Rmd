@@ -1,48 +1,39 @@
 ---
 title: "Practice 3"
-author: "Eric Liu"
-date: "2021/10/27"
+author: "Liu, CHIA-HUNG (Eric)"
+date: "2021/11/22"
 output: html_document
 ---
-### Using rairuoho dataset, examine the relationship between the length of the plant at day3 and the length at day7: create a scatterplot.
-
-# Import data
+# Create an interactive map
+## Features of my map: introducing instrument shops near NTU. 
+### Build up the data base (resource from google map)
 
 ```{r}
-
-rairuoho <- read.table('https://www.dipintothereef.com/uploads/3/7/3/5/37359245/rairuoho.txt', header = T, sep = '')
-head(rairuoho, 4)
-str(rairuoho)
-
+library(leaflet)
+library(tidyverse)
+library(sp)
+Instr.sp <- data.frame(Name =  c('金螞蟻金山店', '金螞蟻中華店', '金石樂器', '集樂成樂器', '長安樂器'))
+Instr.sp$Long <- c(121.5291256640116, 121.51032550667296, 121.53982186840682, 121.51683461233273, 121.52745907906973)
+Instr.sp$Lat <- c(25.040298445909055, 25.047794718028047, 25.01517693018381, 25.021866535804904, 25.034273891066)
+Instr.sp$Star <- c(4.5, 4.6, 3.3, 5.0, 4.6)
 ```
 
-# Create a scatterplot
-
-### I also included the treatment and the germinate number in my scatter plot by different color and size as well.
-
+### Create a guitar icon to attract users
+The picture were uploaded to the website, Imgure, to get the URL of the picture.
 ```{r}
+Guitar <- makeIcon(
+  iconUrl = "https://i.imgur.com/4VdEDK6.png",
+  iconWidth = 78, iconHeight = 95,
+  iconAnchorX = 78, iconAnchorY = 94)
+```
 
-#pdf(file = 'The length of plant.pdf', width = 6, height = 4)
-
-rai.col <- ifelse(rairuoho$treatment == 'nutrient', 'red', 'navy') #Different color for different treatment, red for with enriched ones and blue for control group.
-par(mar = c(5, 4, 4, 6)) #Set up the margins of the plot
-
-#Build a blank plot
-plot(day3 ~ day7, data = rairuoho, type = 'n', las = 1,
-     main = 'The relationship between the length of plant\n at day3 and the length at day7',
-     xlab = 'Day7 length (cm)', ylab = 'Day3 length (cm)',
-     xlim = range(rairuoho$day7, na.rm = T), ylim = c(0, 13), yaxs = 'i', xaxs = 'i')
-
-#Add scatters on the plot
-points(day3 ~ day7, data = rairuoho, cex = rairuoho$germinate/10, pch = 19,
-       col = scales::alpha(rai.col, 0.7))
-
-legend(x = 127, y = 12, legend = c('Enriched', 'Water'), title = 'Treatment', pch = 19,
-       col =  scales::alpha(levels(as.factor(rai.col)), 0.7), bty = 'n', xpd = T, title.adj = 0) #Legend for different treatment
-
-legend(x = 127, y = 6, legend = c('20', '6'), title = 'Number', pch = 19, bty = 'n', xpd = T,
-       pt.cex = c(2, 0.6)) #Legend for different germinate number
-
-#dev.off()
+### Build the map
+Users can know the name of the shops by clicking the icons and knowing costumer judgement by touch the icons.
+```{r}
+leaflet(Instr.sp) %>%
+  addTiles() %>%
+  setView(lng = 121.539, lat = 25.030, zoom = 13) %>%
+  addProviderTiles(providers$Stamen.TonerLite) %>%
+  addMarkers(lng = ~ Long, lat = ~ Lat, icon = Guitar, popup = ~ Name, label = ~ Star)
 
 ```
