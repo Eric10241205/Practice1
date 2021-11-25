@@ -1,0 +1,82 @@
+---
+title: "Lotka-Volterra equations"
+author: "Liu, CHIA-HUNG (Eric)"
+date: "2021/11/25"
+output: html_document
+---
+
+# Lotka-Volterra equations
+When having two species using the same resources but with different rates of efficiency, we can model their population growth using Lotka-Volterra equations. 
+$$ N1_{t+1} = N1_t + \left[ growth.rate \times N1_t \times \left( \frac {K_1-N1_t-\alpha_{12}N2_t} {K_1}\right)\right] $$ 
+$$ N2_{t+1} = N2_t + \left[ growth.rate \times N2_t \times \left( \frac {K_2-N2_t-\alpha_{21}N2_t} {K_2}\right)\right] $$
+K values are the carrying capacities for each of the two species, both α values are competition coefficients that translate the effect of one species on another. 
+
+### Create a function
+The script was wrote by prof. Denis originally. It approached the solution but still not working! So below is the script after I debugged. 
+
+```{r}
+grow <- function(start_1, start_2, growth.rate_1 = 3.2, growth.rate_2 = 1.2,
+                 K1 = 100, K2 = 120, a12 = 0.8, a21 = 0.8){
+  num_gen <- 30
+  N1 <- rep(0, 30)
+  N2 <- rep(0, 30)
+  generation <- rep(1, num_gen)
+  N1[1] <- start_1
+  N2[1] <- start_2
+  for (i in 2:30){
+    N1[i] = N1[i-1] + (growth.rate_1 * N1[i-1] * ((K1 - N1[i-1] - a12 * N2[i-1]) / K1))
+    N2[i] = N2[i-1] + (growth.rate_2 * N2[i-1] * ((K2 - N2[i-1] - a21 * N1[i-1]) / K2))
+    generation[i] = i
+  }
+if (N1[1] > 0){
+  plot(N1 ~ generation, typ="o", ylim=c(0, max(c(K1, K2))), ylab="N",
+       sub = paste('N1 = ', start_1, ', N2 = ', start_2))
+  legend('right', legend = c('N1', 'N2'), col = c(1, 2), pch = 1, bty = 'n')
+} else {
+  plot(N1 ~ generation, typ="n", ylim=c(0, max(c(K1,K2))), ylab="N",
+       sub = paste('N1 = ', start_1, ', N2 = ', start_2))
+}
+if (N2[1] > 0){
+  lines(N2 ~ generation, typ="o", col = 2)
+  legend('right', legend = c('N1', 'N2'), col = c(1, 2), pch = 1, bty = 'n')}
+}
+
+```
+
+### Plot a graphic
+Plot a graphic to present three different situations.
+```{r}
+#pdf('Lotka-Volterra equations.pdf', height = 6, width = 4)
+
+par(mar = c(5, 4, 1, 1), mfrow = c(3, 1), las = 1)
+grow(1, 0)
+text(25, 90, "Species 1 alone")
+grow(0, 1)
+text(25, 90, "Species 2 alone")
+grow(1, 2)
+text(25, 90, "Both Species competing")
+
+#dev.off()
+
+```
+
+### Make an animation
+The animate can show the change with increasing initial number of the two species. The result would be saved as a gif file.
+```{r}
+require(animation)
+saveGIF({
+  for (i in seq(0, 100, 10)) {
+    grow(i/2, i, growth.rate_2 = 2)
+  }
+}, movie.name = 'Species interaction.gif', interval = 0.25)
+
+```
+
+### Show the GIF
+To show the GIF in Rmarkdown, we can use the package: gifski
+```{r, animation.hook="gifski"}
+library(gifski)
+for (i in seq(0, 100, 10)) {
+    grow(i/2, i, growth.rate_2 = 2)
+  }
+```
