@@ -1,0 +1,77 @@
+---
+title: "My t-test"
+author: "Liu, CHIA-HUNG (Eric)"
+date: "2021/12/6"
+output: html_document
+---
+### Aim
+Create my own my.t.test function, that I will use to test the effect of treatment on length. Applied it a for various days. Interpret.
+
+### Import data
+We are going to use the dataset, rairuoho, this time.
+```{r}
+rairuoho <- read.table('https://www.dipintothereef.com/uploads/3/7/3/5/37359245/rairuoho.txt',
+                       header = T, sep = '')
+
+str(rairuoho)
+```
+
+### Create my own t-test function
+- Equal population variances  
+T value would be calculated followed the formula below:
+$$t = \frac{(\bar x_1 - \bar x_2) - (\mu_1-\mu_2)}{\sqrt{s^2_p(\frac{1}{n_1}+\frac{1}{n_2})}}$$
+The $s_p^2$ is called pooled sample variance, and is defined
+$$ s_p^2 = \frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{n_1+n_2+1}$$
+with $v = n_1+n_2-2$ degrees of freedom  
+  
+- Unequal population variance  
+The t test is like below:
+$$t=\frac{(\bar x_1 - \bar x_2) -(\mu_1-\mu_2)}{\sqrt{(\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2})}}$$
+With the degree of freedom:
+$$\nu=\frac{(\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2})^2}{\sqrt{\frac{(\frac{s_1^2}{n_1})}{n_1-1}+\frac{(\frac{s_2^2}{n_2})}{n_2-1}}} $$
+Create `my.t.test` function that can calculate t value and p-value under the two situation.
+```{r}
+my.t.test <- function(A, B, var.equal = c('TRUE', 'FALSE')){
+  n.A <- length(A) - sum(is.na(A))
+  n.B <- length(B) - sum(is.na(B))
+  df.A <- length(A) - 1 - sum(is.na(A))
+  df.B <- length(B) - 1 - sum(is.na(B))
+  if(var.equal == TRUE){
+    sp.sqr <- (sd(A, na.rm = T)^2 * df.A + sd(B, na.rm = T)^2 * df.B) / (df.A + df.B)
+    t.value <- (mean(A, na.rm = T) - mean(B, na.rm = T)) /
+      sqrt(sp.sqr * (1 / n.A + 1 / n.B))
+    df.AB <- df.A + df.B
+    p.value <- pt(t.value, df = df.AB)*2
+    print('Two Sample t-test')
+  } else {
+    t.value <- (mean(A, na.rm = T) - mean(B, na.rm = T)) / 
+      sqrt(sd(A, na.rm = T)^2 / n.A + sd(B, na.rm = T)^2 / n.B)
+    df.AB <- (sd(A, na.rm = T)^2 / n.A + sd(B, na.rm = T)^2 / n.B)^2 / 
+      (((sd(A, na.rm = T)^2 / n.A)^2 / df.A) + ((sd(B, na.rm = T)^2 / n.B)^2 / df.B))
+    p.value <- pt(t.value, df = df.AB)*2
+    print('Welch Two Sample t-test')
+  }
+  print(paste('t = ', signif(t.value, 5), ', df = ', signif(df.AB, 5), ', p-value = ', signif(p.value, 3),
+              ifelse(p.value > 0.05, ', No significance', ifelse(p.value > 0.01, '*', '**'))))
+  print(paste('Result: ', ifelse(p.value > 0.05, 'accept H0, reject H1', 'reject H0, accept H1')))
+}
+```
+
+### Test my function
+Use F test to identify whether the variance of the two vector is equal or not.   
+Apply the function with different parameter.  
+Compare `my.t.test`function with the `t.test` function in R.  
+
+- With equal variance
+```{r}
+var.test(rairuoho$day5, rairuoho$day6)
+my.t.test(rairuoho$day5, rairuoho$day6, var.equal = T)
+t.test(rairuoho$day5, rairuoho$day6, var.equal = T)
+```
+
+- With unequal variance
+```{r}
+var.test(rairuoho$day3, rairuoho$day6)
+my.t.test(rairuoho$day3, rairuoho$day6, var.equal = F)
+t.test(rairuoho$day3, rairuoho$day6, var.equal = F)
+```
