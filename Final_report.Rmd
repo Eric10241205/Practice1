@@ -1,6 +1,6 @@
 ---
 title: "Final report"
-author: "Liu, CHIA-HUNG (Eric)"
+author: "Chia-Hung, Liu (Eric)"
 date: "2022/1/11"
 output: html_document
 ---
@@ -13,21 +13,21 @@ library(rgdal)
 ```
 
 #### 1.	Introduction  
-Amphioxus belongs to Cephalochordate, which is thought to be an important transition taxon of invertebrates evolving to vertebrates. They are model species in evolutionary biology that can help us understand more about neurodevelopment. There are three genera of amphioxus, which are _Asymmetron_, _Epigonichthys_, and _Branchiostoma_. (Poss S. G, et al., 1996; Nishikawa T., 2004) Taiwan is recorded with five species, which is _A. lucayanum_, _E. maldivensis_, _E. cultellus_, _B. belcheri_, _B. japonicum_ (Lin et al., 2015). The dominant species in Taiwan is _A. lucayanum_.
-However, due to pollution and human activity, the number of amphioxi decreases sharply. Many research resources are being put into knowing their reproduction patterns. Most _Branchiostoma_ species can reproduce steadily in artificial environment. In contrast, we still know little about the reproduction of _Asymmetron_. The reproduction patterns of _A. lucayanum_ in Taiwan can be divided into north group and south group by seasonal variations. South group has higher densities, and their amount reaches peak in June. Mature individuals can be found all over the year, showing no apparent breeding season. On the contrary, north group has less densities, and their amount reaches peak in June as well. Mature individuals appear only from August to September. Therefore, temperature is supposed to be a key factor influencing the maturation of _A. lucayanum_ in Taiwan (Lin et al., 2015).
+Amphioxus belongs to Cephalochordate, which is thought to be an important transition taxon of invertebrates evolving to vertebrates. They are model species in evolutionary biology that can help us understand more about neurodevelopment. There are three genera of amphioxus, which are _Asymmetron_, _Epigonichthys_, and _Branchiostoma_. (Poss S. G, et al., 1996; Nishikawa T., 2004). Taiwan is recorded with five species, which is _A. lucayanum_, _E. maldivensis_, _E. cultellus_, _B. belcheri_, _B. japonicum_ (Lin et al., 2015). The dominant species in Taiwan is _A. lucayanum_.
+However, due to pollution and human activity, the number of amphioxi decreases sharply. Many research resources are being put into knowing their reproduction patterns. Most _Branchiostoma_ species can reproduce steadily in artificial environment. In contrast, we still know little about the reproduction of _Asymmetron_. The reproduction patterns of _A. lucayanum_ in Taiwan can be divided into northern group and southern group by seasonal variations. Southern group has higher densities, and their amount reaches peak in June. Mature individuals can be found all over the year, showing no apparent breeding season. On the contrary, northern group has less densities, and their amount reaches peak in June as well. Mature individuals appear only from August to September. Therefore, temperature is supposed to be a key factor influencing the maturation of _A. lucayanum_ in Taiwan (Lin et al., 2015).
 
 ***
 
 #### 2.	Aim 
 To realize the growth and reproduction pattern of _A. lucayanum_ in Xialiuqiu, I proposed the following hypothesis:  
--- Body length varied among different seasons or sites.  
--- Gonad index is correlated with body length. if amphioxus body length is longer, the gonad index should increase as well.  
--- According to the survey conducted by Lin et al(2015), the breeding season for southern groups is summer, the gonad index should be larger than the ones in spring time.   
+-- Body length varied among different seasons or sites because different environmental conditions influence the growth of amphioxi.  
+-- Gonad index is correlated with body length. If amphioxus body length is larger, the gonad index should increase as well.  
+-- According to the survey conducted by Lin et al(2015), breeding season for southern groups of _A. lucayanum_ is summer. The gonad index of amphioxi caught in summer should be larger than the ones caught in spring.   
 
 ***
 
 #### 3.	Material & Method
-Amphioxi were collected by scuba diving in August 2020 and March 2021. In the first sampling, we collected amphioxi only in Lubster cave. In the second sampling, We chose three site, Lobster cave, Dafu, and Shanfu(figure1). Select suitable sands in the depth from 5 to 17 meters and dug the sands with sampling bags. The sands were brought back to the shore and put into a bucket. By stirring the sands, we could find out amphioxi hiding in the sands. The amphioxi were then scooped up by a spoon and poured into tubes.   
+Amphioxi were collected by scuba diving in August 2020(summer) and March 2021(spring). In the first sampling event, we collected amphioxi only in Lobster cave. In the second sampling event, We chose three sites, which were Lobster cave, Dafu, and Shanfu(figure1). After selected suitable sands in the depth from 5 to 17 meters, we dug the sands with sampling bags. The sands were brought back to the shore and put into a bucket. By stirring the sands, we could find out amphioxi hiding in the sands. The amphioxi were then scooped up by a spoon and poured into tubes.   
 
 ```{r message=FALSE, warning=FALSE, results='hide'}
 # Mapping
@@ -55,15 +55,15 @@ text(120.376, 22.334-0.002,'Dafu')
 text(120.362, 22.341-0.002,'Shanfu')
 ```
 
-Amphioxi were brought back to the lab the next day to identify their species and measure their physical index (`body length`, `body height`, and `gonad height`) under microscopes. Body length is measured along its notochord. Body height and gonad height are the maximum width of lancelet body and gonad, respectively. Gonad index is gonad height divided by body height(figure2). It can be used to represent relative ripeness(Holland, N. D., 2011).  
+Amphioxi were brought back to the lab the next day to identify their species and measure their physical index,body length(BL), body height(BH), and gonad height(GH), under microscopes. Body length was measured along their notochords. Body height and gonad height were the maximum width of lancelet body and gonad, respectively. Gonad index is calculated as gonad height divided by body height(figure2). It can be used to represent relative ripeness(Holland, N. D., 2011).  
 
-\centering
+
 ![Figure2](D:\Homework\R\Graduate\R-Homework\AL_figure.png)
 <center> __Figure 2.__ BH: body height; GH: gonad height </center>
 
 ##### 4. Result  
 ##### Data importation and arrangement
-First, import the xlsx files and rearrange the data. Because the original data included another amphioxus species, _E. maldivensis_, I picked up the desired data by `filter`. To combine these two table, I labeled each other with their sampling season and used `rbind` to combine them together.
+First, import the xlsx files and rearrange the data. Because the original data included another amphioxus species, _E. maldivensis_, I picked up the target species by `filter`. To combine the two table, I labeled each other with their sampling season and used `rbind` to combine them together.
 
 ```{r}
 # Import data
@@ -92,7 +92,7 @@ str(AL_total)
 ```
 
 ##### Body length variations between  spring and summer
-To visualize the body length, I combined violin plot, jitter plot, and boxplot to present data variations and if they are normal distributions. 
+To visualize the body length, I combined violin plot, jitter plot, and boxplot to present data variations, and it can show if body length are normal distributions at the same time. 
 ```{r}
 season.p <- ggplot(AL_total, aes(x = Season, y = BL)) +
   geom_violin(trim = F) +
@@ -105,7 +105,7 @@ season.p+labs(caption = 'Figure 3')+
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
 ```
 
-To test whether the body length in different season is equal or not, I tested if they are normal distributed and following with t-test
+To examine whether the body length in different season is equal or not, I did shapiro test to know if they are normal distributed. Then I did t-test to compare whether their means are equal.
 
 ```{r, warning=FALSE}
 shapiro.test(AL_spring$BL) # Not normal distributed
@@ -114,7 +114,7 @@ wilcox.test(AL_spring$BL, AL_summer$BL) # No significant difference
 ```
 
 ##### Body length variations in Dafu and Lobster cave
-I used the same way to visualize the data. Noted that because there were no _A. lucayanum_ collected in Shafu, so there are only two location in the plot.
+I used the same way to visualize the data. Noted that because there were no _A. lucayanum_ collected in Shanfu, there are only two location in the plot.
 
 ```{r}
 location.p <- ggplot(AL_total, aes(x = Location, y = BL)) +
@@ -128,7 +128,7 @@ location.p+labs(caption = 'Figure 4')+
   theme(plot.caption = element_text(hjust = 0.5, size = 12))
 ```
 
-To test whether the body length in different season is equal or not, I tested if they are normal distributed and did t-test
+To examine whether the body length in different season is equal or not, I did shapiro test for normality, fligner test for variance equality, and t-test for mean equality.
 
 ```{r warning=FALSE}
 #Location indices
@@ -169,10 +169,10 @@ summary(lm_spring)
 ***
 
 #### 5.	Discussion 
-Although the mean of body length of amphioxus appear no significant difference, the statistic dispersion still has different as we can infer from the violin plot(figure 3). Summer group shows more joined trend, while spring group is more discrete. A lot of juvenile amphioxi were collected in spring, but most amphioxi collected in summer were mature with visible gonad(figure 5). If the amphioxus populations have different body length in different sites, it would influence the seasonal dispersion result as we did not collect samples in Dafu and Shanfu in summer. As a result, I did t-test to examine whether there was difference between different sites, and the result showed that the mean body length was equal between Dafu and Lobster cave. Season influences more in growth and reproduction of amphioxi than location.  
-However, figure 5 shows that the relationship between body length and gonad index does not fit linear models well. R-square values are low in both summer group and spring group, which means that body length is not positively related to gonad index as I expected initially. We also found an individual with high gonad index near 60%, but it was less than 10 mm. Even amphioxus is small, it can have large gonad.   
-Using gonad index have a defect as it cannot represent whether amphioxi are mature or not. If an amphioxus is mature but it had spawned just before we got it, then gonad index will only be recorded as zero.  Gonad index can only show the fecundity for those who possessing sperms or eggs and have not spawned yet.  
-The summer group has higher gonad index than the spring group obviously in figure 5. Nevertheless, there are several large amphioxi in spring groups. It is supposed that the amphioxi become mature in summer, and when it comes to spring, many larva or juvenile recruit. Most mature amphioxi had released their sperms or eggs before spring. That is why the size of amphioxi is more discrete in spring.  
+Although the mean body length of amphioxus appears no significant difference, the statistic dispersion still has different as we can infer from the violin plot(figure 3). Summer group shows more joined trend, while spring group is more discrete. A lot of larva or juvenile amphioxi were collected in spring, but most amphioxi collected in summer were mature with visible gonad(figure 5). If the amphioxus populations have different body length in different sites, it would influence the seasonal dispersion result as we did not collect samples in Dafu and Shanfu in summer. As a result, I did t-test to examine whether there was difference between different sites, and the result showed that the mean body length was equal between Dafu and Lobster cave. Season influenced more in growth and reproduction of amphioxi than location.  
+However, figure 5 shows that the relationship between body length and gonad index does not fit linear models. R-square values are low in both summer group and spring group, which means that body length is not positively related to gonad index as I expected initially. Also, an individual has high gonad index near 60%, but it was small (less than 10 mm). This discovery shows that even amphioxus is small, it can have large gonad.   
+Using gonad index have a flaw: it cannot represent whether amphioxi are mature or not, it can only represent relative ripeness. If an amphioxus is mature but it had spawned just before our collection, then gonad index will only be recorded as zero. Gonad index can only show the fecundity for those who possessing sperms or eggs and have not spawned yet.  
+The summer group has higher gonad index than the spring group obviously in figure 5. Nevertheless, there are several large amphioxi in spring groups, which might have spawned before. It is supposed that the amphioxi become mature in summer, and many larva or juvenile recruit during spring. Most mature amphioxi had released their sperms or eggs before spring, so a lot of large size amphioxi had no gonad in spring group were found. It is the explanation for why the size distribution of amphioxi in spring group is more discrete.  
 
 ***
 #### 6. Conclusion
